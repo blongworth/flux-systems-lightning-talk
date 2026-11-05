@@ -10,6 +10,7 @@ subtitle: "Building better seafloor instruments"
 author: "Brett Longworth · MACHINELab"
 date: today
 date-format: long
+output-file: index.html
 format:
   revealjs:
     theme: [default, whoi.scss]
@@ -31,7 +32,8 @@ title-slide-attributes:
 :::: {.columns}
 
 ::: {.column width="32%" .system}
-::: {.placeholder}
+<!-- swap in: ![](images/lecs.jpg){fig-alt="Photo of the LECS eddy covariance lander deployed on the seafloor"} -->
+::: {.placeholder role="img" aria-label="Placeholder: Photo of the LECS eddy covariance lander deployed on the seafloor"}
 PHOTO: LECS on the seafloor<br>`images/lecs.jpg`
 :::
 ### LECS
@@ -48,7 +50,8 @@ $$F = \overline{w'C'}$$
 :::
 
 ::: {.column width="32%" .system}
-::: {.placeholder}
+<!-- swap in: ![](images/gems.jpg){fig-alt="Photo of the GEMS gradient sampling system deployed in an eelgrass meadow"} -->
+::: {.placeholder role="img" aria-label="Placeholder: Photo of the GEMS gradient sampling system deployed in an eelgrass meadow"}
 PHOTO: GEMS deployed<br>`images/gems.jpg`
 :::
 ### GEMS
@@ -65,7 +68,8 @@ $$F = -K_z\,\frac{\partial C}{\partial z}$$
 :::
 
 ::: {.column width="32%" .system}
-::: {.placeholder}
+<!-- swap in: ![](images/egcf.jpg){fig-alt="Photo of the EGCF benthic chamber enclosing eelgrass on the seafloor"} -->
+::: {.placeholder role="img" aria-label="Placeholder: Photo of the EGCF benthic chamber enclosing eelgrass on the seafloor"}
 PHOTO: EGCF chamber over eelgrass<br>`images/egcf.jpg`
 :::
 ### EGCF
@@ -150,7 +154,8 @@ You'll change firmware constantly while climbing that ladder: a fix after the be
 :::
 
 ::: {.column width="55%"}
-::: {.placeholder .tall}
+<!-- swap in: ![](images/data-structure.png){fig-alt="Time series from a test deployment with data gaps, dropped samples, and a histogram of time between samples highlighted"} -->
+::: {.placeholder .tall role="img" aria-label="Placeholder: Time series from a test deployment with data gaps, dropped samples, and a histogram of time between samples highlighted"}
 PLOT: representative time series with problems flagged<br>(gaps, dropped samples, Δt histogram)<br>`images/data-structure.png`
 :::
 :::
@@ -183,7 +188,8 @@ The other half of the versioning story is the processing code. Firmware versions
 :::
 
 ::: {.column width="55%"}
-::: {.placeholder .tall}
+<!-- swap in: ![](images/telemetry.png){fig-alt="Telemetry status plot from a long deployment showing battery voltage, sample counts, and last good timestamp over time"} -->
+::: {.placeholder .tall role="img" aria-label="Placeholder: Telemetry status plot from a long deployment showing battery voltage, sample counts, and last good timestamp over time"}
 PLOT: telemetry status / dashboard from a long deployment<br>`images/telemetry.png`
 :::
 :::
@@ -208,7 +214,8 @@ It doesn't have to be fancy. A few bytes an hour (battery, how many samples were
 
 :::: {.columns}
 ::: {.column width="32%"}
-::: {.placeholder .short}
+<!-- swap in: ![](images/lecs-plot.png){fig-alt="Representative LECS oxygen flux time series"} -->
+::: {.placeholder .short role="img" aria-label="Placeholder: Representative LECS oxygen flux time series"}
 PLOT: LECS O₂ flux<br>`images/lecs-plot.png`
 ::::::
 ::: {.funder}
@@ -222,7 +229,8 @@ PLOT: LECS O₂ flux<br>`images/lecs-plot.png`
 ::: {.column width="2%"}
 :::
 ::: {.column width="32%"}
-::: {.placeholder .short}
+<!-- swap in: ![](images/gems-plot.png){fig-alt="Representative GEMS vertical concentration gradient profile"} -->
+::: {.placeholder .short role="img" aria-label="Placeholder: Representative GEMS vertical concentration gradient profile"}
 PLOT: GEMS gradient<br>`images/gems-plot.png`
 ::::::
 ::: {.funder}
@@ -236,7 +244,8 @@ PLOT: GEMS gradient<br>`images/gems-plot.png`
 ::: {.column width="2%"}
 :::
 ::: {.column width="32%"}
-::: {.placeholder .short}
+<!-- swap in: ![](images/egcf-plot.png){fig-alt="Representative EGCF chamber concentration time series"} -->
+::: {.placeholder .short role="img" aria-label="Placeholder: Representative EGCF chamber concentration time series"}
 PLOT: EGCF chamber time series<br>`images/egcf-plot.png`
 ::::::
 ::: {.funder}
