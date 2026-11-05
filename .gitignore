@@ -1,0 +1,4 @@
+_template/
+*_files/
+*.html
+.quarto/

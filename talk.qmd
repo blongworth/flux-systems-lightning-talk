@@ -1,0 +1,297 @@
+---
+# Alternate titles (pick one):
+#   - The Ocean Finds Your Bugs: Lessons from Three Benthic Flux Systems
+#   - Three Flux Systems, Many Lessons: Building Better Seafloor Instruments
+#   - What LECS, GEMS, and EGCF Taught Me About Building Instruments
+#   - Test on Land, Analyze Early, Phone Home: Notes from Benthic Flux Engineering
+#   - Lessons from the Seafloor: Making Flux Systems That Work the First Time (Eventually)
+title: "Three Flux Systems, Many Lessons"
+subtitle: "Building better seafloor instruments"
+author: "Brett Longworth · MACHINELab"
+date: today
+date-format: long
+format:
+  revealjs:
+    theme: [default, whoi.scss]
+    width: 1600
+    height: 900
+    logo: assets/whoi-logo-white.png
+    slide-number: c/t
+    show-slide-number: speaker
+    transition: none
+    hash: true
+title-slide-attributes:
+  data-background-image: assets/whoi-title-bg.jpg
+  data-background-size: cover
+  data-background-opacity: "0.35"
+---
+
+## Three systems, three ways to measure flux {background-image="assets/whoi-bg.jpg"}
+
+:::: {.columns}
+
+::: {.column width="32%" .system}
+::: {.placeholder}
+PHOTO: LECS on the seafloor<br>`images/lecs.jpg`
+:::
+### LECS
+*Long-term Eddy Covariance System*
+
+Correlates fast vertical velocity with fast concentration fluctuations
+
+$$F = \overline{w'C'}$$
+
+[O₂ · heat · H⁺ (pH)]{.gases}
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column width="32%" .system}
+::: {.placeholder}
+PHOTO: GEMS deployed<br>`images/gems.jpg`
+:::
+### GEMS
+*Gradient Exchange Mass Spectrometry*
+
+Quadrupole mass spec measures concentration at several heights; gradient × mixing gives flux
+
+$$F = -K_z\,\frac{\partial C}{\partial z}$$
+
+[O₂ · CO₂]{.gases}<br>[CH₄ · H₂S too small to resolve in the open meadow]{.miss}
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column width="32%" .system}
+::: {.placeholder}
+PHOTO: EGCF chamber over eelgrass<br>`images/egcf.jpg`
+:::
+### EGCF
+*Eel Grass Chamber Flux*
+
+Change in concentration inside a closed chamber over time
+
+$$F = \frac{V}{A}\,\frac{dC}{dt}$$
+
+[O₂ · CO₂ · N₂ · CH₄ · H₂S]{.gases} + **SCALUP** sonde: T, P, S, O₂, pH
+:::
+
+::::
+
+::: {.callout-box}
+**Reuse your tools:** EGCF runs on the GEMS mass spec and its software, and adds SCALUP, a sonde built in our lab.
+:::
+
+::: notes
+**[Title slide, 0:00–0:15]** Hi, I'm Brett, a research associate in MACHINELab. Over the last few years I've worked on three different systems for measuring benthic flux. Today isn't about the fluxes. It's about what building them taught me about building instruments.
+
+**[0:15–1:00]** Three systems that use different physics.
+
+- **LECS** is eddy covariance. It measures vertical water velocity and O₂, temperature, and pH many times a second, and the covariance of the two gives the flux of O₂, heat, and H⁺, with no disturbance to the seafloor. *F = mean of w′C′*: the average product of the velocity and concentration fluctuations.
+- **GEMS** is a gradient method. A quadrupole mass spectrometer samples water from several heights above the bottom, and the concentration gradient times turbulent mixing gives the flux. *F = −K ∂C/∂z*, where K is the eddy diffusivity, which we estimate from the turbulence. We hoped to get O₂, CO₂, CH₄, and H₂S. In an open eelgrass meadow, CH₄ and H₂S were too dilute to resolve.
+- **EGCF** is the simplest idea: put a chamber over the eelgrass and watch concentrations change. *F = (V/A) dC/dt*: the rate of change, scaled by chamber volume over footprint area. That gives back the signal that's too small in open water.
+
+EGCF reuses the GEMS mass spec and software, and adds SCALUP, a sonde we built in-house for T, P, S, O₂, and pH. Lesson zero: build hardware, firmware, and analysis code in modules that can outlive the project they were built for.
+
+All three had the same kinds of engineering problems, and that's the rest of this talk.
+:::
+
+## Lesson 1: The ocean is a [great tester]{.accent}, and a bad place to start testing {background-image="assets/whoi-bg.jpg"}
+
+- The ocean will quickly find every leaky connector, marginal power budget, and firmware edge case
+- Every problem found at sea costs a boat day, a dive, or a whole deployment
+- **Climb the ladder:** find problems where fixing them is cheap
+
+::: {.ladder}
+::: {.rung .r1}
+Bench<span>minutes to fix</span>
+:::
+::: {.rung .r2}
+Tank<span>hours</span>
+:::
+::: {.rung .r3}
+Outside / dock<span>a day</span>
+:::
+::: {.rung .r4}
+Ocean<span>a cruise or a season</span>
+:::
+:::
+
+::: {.ladder-caption}
+<span>cheap, fast, repeatable</span><span>expensive, slow, unforgiving</span>
+:::
+
+::: notes
+**[1:00–1:40]** The ocean is a fantastic test environment. It's corrosive, cold, wet, moving, and full of life, and it finds every weakness in your system within days. That's exactly why it shouldn't be your first test.
+
+Every rung of this ladder costs about ten times more than the one below it. Run on the bench until it runs for days unattended. Put it in a tank to find leaks and biofouling-free baseline behavior. Run it outside on the dock to see real temperature swings, sun, and power. Only then go to the ocean.
+
+*[Add a specific example: e.g. a connector or housing failure that a tank test would have caught.]*
+:::
+
+## Lesson 2: Build the analysis [before]{.accent} you deploy {background-image="assets/whoi-bg.jpg"}
+
+:::: {.columns}
+
+::: {.column width="45%"}
+- A working **reduce → analyze → plot** pipeline is a diagnostic tool, not just a final step
+- Run it on every test deployment
+- Check the *structure* of the data, not just the values:
+  - gaps in the time series
+  - out-of-range or stuck values
+  - clock drift, timing jitter
+  - actual vs. nominal sample rate
+:::
+
+::: {.column width="55%"}
+::: {.placeholder .tall}
+PLOT: representative time series with problems flagged<br>(gaps, dropped samples, Δt histogram)<br>`images/data-structure.png`
+:::
+:::
+
+::::
+
+::: notes
+**[1:40–2:30]** This is the lesson I most wish I'd learned sooner. If you wait until after the science deployment to write the analysis, you find out too late that the data can't answer your question.
+
+When the pipeline exists during testing, every test deployment produces a flux estimate and plots. Problems with the system show up right away: a noisy sensor, a pump that isn't flushing, a clock that drifts.
+
+Look at the data's structure as well as its values. Plot the time between samples. Are you actually getting 8 Hz, or 7.6 with gaps? Count the missing records. Check ranges and stuck values. For eddy covariance, a small timing offset between sensors biases the flux, so timing *is* data.
+
+*[Describe what the plot shows: e.g. the Δt histogram from LECS that revealed dropped samples.]*
+:::
+
+## Lesson 3: [Telemetry]{.accent} pays for itself on long deployments {background-image="assets/whoi-bg.jpg"}
+
+:::: {.columns}
+
+::: {.column width="45%"}
+- Find out on **day 2**, not at recovery on **day 60**
+- Even a small heartbeat helps:
+  - battery voltage
+  - sample counts / last good timestamp
+  - a few key sensor values
+- Lets you intervene, adjust, or recover early
+:::
+
+::: {.column width="55%"}
+::: {.placeholder .tall}
+PLOT: telemetry status / dashboard from a long deployment<br>`images/telemetry.png`
+:::
+:::
+
+::::
+
+::: notes
+**[2:30–3:10]** For short deployments you can get away without it, but for anything that runs weeks to months, remote telemetry changes everything. Without it, a failure on day 2 means 58 days of nothing, and you don't learn that until recovery.
+
+It doesn't have to be fancy. A few bytes an hour (battery, how many samples were recorded, the last good timestamp, a couple of sensor values) is enough to know whether the system is healthy. With that, you can schedule a dive, change a setting, or pull the system before you lose the season.
+
+*[Add example: what LECS telemetry caught, or what we missed without it.]*
+:::
+
+## Takeaways {background-image="assets/whoi-bg.jpg"}
+
+1. **Test on land first**: let the bench and tank find the cheap bugs
+2. **Analyze early**: the data pipeline is your best diagnostic, so check the data's structure
+3. **Phone home**: telemetry turns lost deployments into fixable ones
+4. **Reuse tools**: build modules that outlive one project
+5. **Ask around**: WHOI has solved these problems before. Ask people, not just machines
+
+:::: {.columns}
+::: {.column width="32%"}
+::: {.placeholder .short}
+PLOT: LECS O₂ flux<br>`images/lecs-plot.png`
+::::::
+::: {.funder}
+<!-- Shell logo: English Wikipedia, File:Shell_logo.svg (non-free trademark, used under fair use)
+     https://en.wikipedia.org/wiki/File:Shell_logo.svg -->
+![](images/logo-shell.svg){.funder-logo fig-alt="Shell logo"}
+
+[**LECS** funded by<br>Shell Research]{.funder-text}
+:::
+:::
+::: {.column width="2%"}
+:::
+::: {.column width="32%"}
+::: {.placeholder .short}
+PLOT: GEMS gradient<br>`images/gems-plot.png`
+::::::
+::: {.funder}
+<!-- NSF logo: Wikimedia Commons, File:NSF_logo.svg (public domain, US government work)
+     https://commons.wikimedia.org/wiki/File:NSF_logo.svg -->
+![](images/logo-nsf.svg){.funder-logo fig-alt="NSF logo"}
+
+[**GEMS** funded by<br>NSF OCE-OTIC]{.funder-text}
+:::
+:::
+::: {.column width="2%"}
+:::
+::: {.column width="32%"}
+::: {.placeholder .short}
+PLOT: EGCF chamber time series<br>`images/egcf-plot.png`
+::::::
+::: {.funder}
+<!-- MassDEP logo: Wikimedia Commons, File:MassDEP_logo.svg (listed as public domain)
+     https://commons.wikimedia.org/wiki/File:MassDEP_logo.svg -->
+![](images/logo-madep.svg){.funder-logo fig-alt="MassDEP logo"}
+
+[**EGCF** funded by<br>MA DEP]{.funder-text}
+:::
+:::
+::::
+
+[Thanks! · blongworth@whoi.edu]{.subtle}
+
+::: notes
+**[3:10–4:00]** To sum up: test on land first, build the analysis early and look at the data's structure, use telemetry for anything long, and design things to be reused. Here's a representative result from each system. They all work now, thanks to those lessons.
+
+None of this is new. WHOI has built seafloor instruments, benthic landers, and long-term moorings for decades, and other groups here learned these lessons the hard way long before I did. So the real takeaway: before your first deployment, go ask them. Someone down the hall has probably already solved your problem. And in the age of AI, it's tempting to just ask a chatbot. Those tools are useful, but they haven't lost an instrument to biofouling or a flooded connector. Ask people, not just machines. Thanks!
+:::
+
+## Backup: thinking in real time on a microcontroller {background-image="assets/whoi-bg.jpg"}
+
+[Backup slide]{.backup-tag}
+
+:::: {.columns}
+
+::: {.column width="45%" .small}
+- Analysis code runs **once**, over finished data. MCU code runs **forever**, on data as it arrives
+- No OS, no scheduler, no threads: one `loop()` does everything
+- Any blocking call (`delay()`, waiting on a serial reply, a slow SD write) can **drop samples**
+- Break work into short, non-blocking steps; use `millis()` timers and state machines; buffer writes
+- Budget the time per sample period: every task has to fit
+:::
+
+::: {.column width="55%"}
+```cpp
+// Blocking: misses samples during the wait
+void loop() {
+  readSensors();
+  pump.on(); delay(5000); pump.off();
+  writeSD();
+}
+
+// Non-blocking: sample on schedule,
+// everything else in small steps
+void loop() {
+  uint32_t now = millis();
+  if (now - lastSample >= SAMPLE_MS) {
+    lastSample += SAMPLE_MS;
+    buffer.push(readSensors());
+  }
+  pumpTask(now);   // state machine
+  if (buffer.full()) writeChunk();
+}
+```
+:::
+
+::::
+
+::: notes
+**[Backup, only if asked]** Writing firmware for these systems needs a different way of reasoning than writing analysis code. In R or Python, you have all the data and you process it in order. On a microcontroller there's no operating system or scheduler. One loop has to read sensors at a fixed rate, run pumps and valves, write to the SD card, and talk to telemetry.
+
+If anything blocks, such as a delay, waiting for a serial reply, or an SD card that takes 100 ms to write, you miss samples. So every task gets broken into small steps and driven by timers and state machines, writes are buffered, and you budget how long each task can take within one sample period.
+:::

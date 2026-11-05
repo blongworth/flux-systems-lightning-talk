@@ -1,0 +1,171 @@
+/*-- scss:defaults --*/
+
+// WHOI brand palette (branding.whoi.edu/our-visual-system/color)
+// Primary
+$whoi-navy:   #041E42; // PMS 282
+$whoi-cyan:   #00A9E0; // PMS 2995
+$whoi-blue:   #0069B1; // PMS 2196
+$whoi-teal:   #00B7BD; // PMS 2397
+$whoi-gray11: #53565A; // Cool Gray 11 (not on navy)
+$whoi-gray4:  #BBBCBC; // Cool Gray 4
+// Secondary (use sparingly)
+$whoi-yellow: #FFD100; // PMS 109
+$whoi-red:    #EE5340; // PMS 2027
+$whoi-light:  #E6E7E8; // Process Black 10%
+$whoi-lime:   #B7BF10; // PMS 583
+
+// Template fonts: Arial for titles and body
+$font-family-sans-serif: Arial, "Helvetica Neue", Helvetica, sans-serif;
+$presentation-heading-font: $font-family-sans-serif;
+$presentation-heading-font-weight: 700;
+$presentation-heading-text-transform: none;
+$presentation-heading-letter-spacing: -0.02em;
+$presentation-heading-color: #FFFFFF;
+$presentation-font-size-root: 36px;
+
+$body-bg: $whoi-navy;
+$body-color: #FFFFFF;
+$link-color: $whoi-cyan;
+$code-color: $whoi-yellow;
+$code-block-bg: rgba(0, 0, 0, 0.35);
+$code-block-border-color: $whoi-blue;
+$presentation-h2-font-size: 1.5em;
+
+/*-- scss:rules --*/
+
+// Logo in the footer, positioned as on the template master (bottom left)
+.reveal .slide-logo {
+  max-height: 3.5% !important;
+  left: 6.9% !important;
+  bottom: 2.5% !important;
+  right: auto !important;
+}
+
+.reveal .slide-number {
+  color: $whoi-gray4;
+  background: transparent;
+}
+
+// Accent colour for emphasis; headlines get a primary accent, not monochrome
+.reveal strong { color: $whoi-cyan; }
+.reveal em { color: $whoi-light; }
+.reveal h2 .accent, .reveal .accent { color: $whoi-cyan; }
+
+.reveal .subtle { color: $whoi-gray4; font-size: 0.75em; }
+.reveal .small { font-size: 0.7em; }
+
+// Title slide
+#title-slide .title { font-size: 1.9em; line-height: 1.05; }
+#title-slide .subtitle { color: $whoi-cyan; font-weight: 400; }
+#title-slide .quarto-title-author-name,
+#title-slide .date { color: $whoi-light; }
+
+// Placeholder boxes for photos/plots still to come
+.reveal .placeholder {
+  border: 3px dashed $whoi-gray4;
+  border-radius: 8px;
+  color: $whoi-gray4;
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.55em;
+  padding: 0.5em;
+  min-height: 300px;
+  margin: 0.2em 0;
+}
+.reveal .placeholder p { font-size: 1em !important; color: $whoi-gray4; }
+.reveal .placeholder code { color: $whoi-yellow; font-size: 0.9em; }
+.reveal .placeholder.tall { min-height: 480px; }
+.reveal .placeholder.short { min-height: 150px; }
+
+// System cards (slide 2)
+.reveal .system h3 {
+  color: $whoi-cyan;
+  margin: 0.2em 0 0;
+  font-size: 1.0em;
+}
+.reveal .system p { font-size: 0.55em; margin: 0.25em 0; line-height: 1.3; }
+.reveal .system .gases { color: $whoi-teal; font-weight: 700; }
+.reveal .system .miss { color: $whoi-red; }
+
+// Callouts
+.reveal .callout-box {
+  border-left: 6px solid $whoi-yellow;
+  background: rgba(255, 209, 0, 0.08);
+  padding: 0.3em 0.6em;
+  font-size: 0.6em;
+  margin-top: 0.4em;
+}
+
+// Test ladder (slide 3)
+.reveal .ladder {
+  display: flex;
+  gap: 0.4em;
+  align-items: flex-end;
+  margin-top: 0.8em;
+}
+.reveal .ladder .rung {
+  flex: 1;
+  text-align: center;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.6em;
+  padding: 0.6em 0.2em;
+  border-radius: 6px;
+}
+.reveal .ladder .rung span { display: block; font-weight: 400; font-size: 0.75em; color: $whoi-light; }
+.reveal .ladder .r1 { background: $whoi-teal; min-height: 2.5em; }
+.reveal .ladder .r2 { background: $whoi-cyan; min-height: 4em; }
+.reveal .ladder .r3 { background: $whoi-blue; min-height: 5.5em; }
+.reveal .ladder .r4 { background: $whoi-red; min-height: 7em; }
+.reveal .ladder-caption {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.5em;
+  color: $whoi-gray4;
+  margin-top: 0.3em;
+}
+
+.reveal .backup-tag {
+  color: $whoi-yellow;
+  font-size: 0.5em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.reveal pre code { font-size: 0.85em; line-height: 1.25; }
+.reveal .ladder-caption p {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+}
+
+// Equations on the systems slide
+.reveal .system mjx-container[display="true"] {
+  font-size: 0.85em !important;
+  margin: 0.15em 0 !important;
+  color: $whoi-light;
+}
+
+// Funder credit under each result plot (takeaways slide)
+.reveal .funder {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  margin-top: 0.2em;
+}
+.reveal .placeholder.logo {
+  min-height: 70px;
+  width: 110px;
+  flex: none;
+  font-size: 0.35em;
+  margin: 0;
+  padding: 0.2em;
+}
+.reveal .funder-text { font-size: 1em; color: $whoi-light; line-height: 1.2; }
+.reveal .funder-text strong { color: $whoi-cyan; }
+.reveal .funder p { margin: 0; line-height: 1.25; font-size: 0.5em; }
+.reveal img.funder-logo { height: 70px; width: auto; margin: 0 !important; flex: none; }
