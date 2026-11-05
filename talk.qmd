@@ -32,10 +32,8 @@ title-slide-attributes:
 :::: {.columns}
 
 ::: {.column width="32%" .system}
-<!-- swap in: ![](images/lecs.jpg){fig-alt="Photo of the LECS eddy covariance lander deployed on the seafloor"} -->
-::: {.placeholder role="img" aria-label="Placeholder: Photo of the LECS eddy covariance lander deployed on the seafloor"}
-PHOTO: LECS on the seafloor<br>`images/lecs.jpg`
-:::
+![](images/lecs_deployment.jpg){fig-alt="Photo of the LECS eddy covariance lander deployed on the seafloor"}
+
 ### LECS
 *Long-term Eddy Covariance System*
 
@@ -50,10 +48,8 @@ $$F = \overline{w'C'}$$
 :::
 
 ::: {.column width="32%" .system}
-<!-- swap in: ![](images/gems.jpg){fig-alt="Photo of the GEMS gradient sampling system deployed in an eelgrass meadow"} -->
-::: {.placeholder role="img" aria-label="Placeholder: Photo of the GEMS gradient sampling system deployed in an eelgrass meadow"}
-PHOTO: GEMS deployed<br>`images/gems.jpg`
-:::
+![](images/gems_deployment.jpg){fig-alt="Photo of the GEMS gradient sampling system deployed in an eelgrass meadow"}
+
 ### GEMS
 *Gradient Exchange Mass Spectrometry*
 
@@ -68,10 +64,8 @@ $$F = -K_z\,\frac{\partial C}{\partial z}$$
 :::
 
 ::: {.column width="32%" .system}
-<!-- swap in: ![](images/egcf.jpg){fig-alt="Photo of the EGCF benthic chamber enclosing eelgrass on the seafloor"} -->
-::: {.placeholder role="img" aria-label="Placeholder: Photo of the EGCF benthic chamber enclosing eelgrass on the seafloor"}
-PHOTO: EGCF chamber over eelgrass<br>`images/egcf.jpg`
-:::
+![](images/egcf_tank.jpg){fig-alt="Photo of the EGCF benthic chamber enclosing eelgrass in a test tank"}
+
 ### EGCF
 *Eel Grass Chamber Flux*
 
@@ -85,7 +79,7 @@ $$F = \frac{V}{A}\,\frac{dC}{dt}$$
 ::::
 
 ::: {.callout-box}
-**Reuse your tools:** EGCF runs on the GEMS mass spec and its software, and adds SCALUP, a sonde built in our lab.
+**Reuse your tools:** EGCF uses similar surface power/data system to LECS and GEMS, runs on the GEMS mass spec with improved software, and adds SCALUP, a sonde built in our lab.
 :::
 
 ::: notes
@@ -105,9 +99,9 @@ All three had the same kinds of engineering problems, and that's the rest of thi
 ## Lesson 1: The ocean is a [great tester]{.accent}, and a bad place to start testing {background-image="assets/whoi-bg.jpg"}
 
 - The ocean will quickly find every leaky connector, marginal power budget, and firmware edge case
-- Every problem found at sea costs a boat day, a dive, or a whole deployment
-- **Climb the ladder:** find problems where fixing them is cheap
-- **Version the firmware** at every rung: tag each build and write its version into the data, so every test result traces back to the code that produced it
+- Every problem found at sea costs a boat day, a swim, or a whole deployment
+- Find problems where fixing them is cheap. Iteration is quick when it's on a bench!
+- **Version the firmware:** tag each build and write its version into the data, so every test result traces back to the code that produced it
 
 ::: {.ladder}
 ::: {.rung .r1}
@@ -120,7 +114,7 @@ Tank<span>hours</span>
 Outside / dock<span>a day</span>
 :::
 ::: {.rung .r4}
-Ocean<span>a cruise or a season</span>
+Field Site<span>a deployment</span>
 :::
 :::
 
@@ -142,22 +136,18 @@ You'll change firmware constantly while climbing that ladder: a fix after the be
 
 :::: {.columns}
 
-::: {.column width="45%" .tight}
-- A working **reduce → analyze → plot** pipeline is a diagnostic tool, not just a final step
-- Run it on every test deployment
-- Check the *structure* of the data, not just the values:
-  - gaps in the time series
+::: {.column width="45%"}
+- **Reduce → analyze → plot** is a diagnostic tool: run it on every test
+- Check the data's *structure*, not just values:
+  - gaps
   - out-of-range or stuck values
   - clock drift, timing jitter
-  - actual vs. nominal sample rate
-- **Make processing reproducible**: version the analysis code too, and record which version produced each result. Paired with the firmware version, you know *what was running when*
+  - true vs. nominal sample rate
+- **Reproducible processing**: version the code, pair it with the firmware version
 :::
 
 ::: {.column width="55%"}
-<!-- swap in: ![](images/data-structure.png){fig-alt="Time series from a test deployment with data gaps, dropped samples, and a histogram of time between samples highlighted"} -->
-::: {.placeholder .tall role="img" aria-label="Placeholder: Time series from a test deployment with data gaps, dropped samples, and a histogram of time between samples highlighted"}
-PLOT: representative time series with problems flagged<br>(gaps, dropped samples, Δt histogram)<br>`images/data-structure.png`
-:::
+![](images/egcf_dash.png){fig-alt="Screenshot of the EGCF webapp"}
 :::
 
 ::::
@@ -174,12 +164,12 @@ The other half of the versioning story is the processing code. Firmware versions
 *[Describe what the plot shows: e.g. the Δt histogram from LECS that revealed dropped samples.]*
 :::
 
-## Lesson 3: [Telemetry]{.accent} pays for itself on long deployments {background-image="assets/whoi-bg.jpg"}
+## Lesson 3: [Telemetry]{.accent} saves time and stress on long deployments {background-image="assets/whoi-bg.jpg"}
 
 :::: {.columns}
 
 ::: {.column width="45%"}
-- Find out on **day 2**, not at recovery on **day 60**
+- Find issues on **day 2**, not at recovery on **day 60**
 - Even a small heartbeat helps:
   - battery voltage
   - sample counts / last good timestamp
@@ -188,10 +178,7 @@ The other half of the versioning story is the processing code. Firmware versions
 :::
 
 ::: {.column width="55%"}
-<!-- swap in: ![](images/telemetry.png){fig-alt="Telemetry status plot from a long deployment showing battery voltage, sample counts, and last good timestamp over time"} -->
-::: {.placeholder .tall role="img" aria-label="Placeholder: Telemetry status plot from a long deployment showing battery voltage, sample counts, and last good timestamp over time"}
-PLOT: telemetry status / dashboard from a long deployment<br>`images/telemetry.png`
-:::
+![](images/gems_status.png){fig-alt="GEMS status report from a two-month deployment: time series of surface Teensy microcontroller temperature, ranging 50 to 70 degrees C with data gaps in October, and ADV seawater temperature, ranging 20 to 24 degrees C" style="max-height: 680px; width: auto; border-radius: 8px; display: block; margin: 0 auto;"}
 :::
 
 ::::
@@ -214,10 +201,8 @@ It doesn't have to be fancy. A few bytes an hour (battery, how many samples were
 
 :::: {.columns}
 ::: {.column width="32%"}
-<!-- swap in: ![](images/lecs-plot.png){fig-alt="Representative LECS oxygen flux time series"} -->
-::: {.placeholder .short role="img" aria-label="Placeholder: Representative LECS oxygen flux time series"}
-PLOT: LECS O₂ flux<br>`images/lecs-plot.png`
-::::::
+![](images/lecs_flux.png){.result-plot fig-alt="LECS mean diel cycle of benthic oxygen flux by season, from about -5 to +6 mmol per square meter per hour, largest in summer and smallest in winter"}
+
 ::: {.funder}
 <!-- Shell logo: English Wikipedia, File:Shell_logo.svg (non-free trademark, used under fair use)
      https://en.wikipedia.org/wiki/File:Shell_logo.svg -->
@@ -229,10 +214,8 @@ PLOT: LECS O₂ flux<br>`images/lecs-plot.png`
 ::: {.column width="2%"}
 :::
 ::: {.column width="32%"}
-<!-- swap in: ![](images/gems-plot.png){fig-alt="Representative GEMS vertical concentration gradient profile"} -->
-::: {.placeholder .short role="img" aria-label="Placeholder: Representative GEMS vertical concentration gradient profile"}
-PLOT: GEMS gradient<br>`images/gems-plot.png`
-::::::
+![](images/gems_flux.png){.result-plot fig-alt="GEMS mean diel cycle of oxygen flux by hour of day with error bars, from about -26 to +26 mmol per square meter per hour, positive during daylight"}
+
 ::: {.funder}
 <!-- NSF logo: Wikimedia Commons, File:NSF_logo.svg (public domain, US government work)
      https://commons.wikimedia.org/wiki/File:NSF_logo.svg -->
@@ -244,10 +227,8 @@ PLOT: GEMS gradient<br>`images/gems-plot.png`
 ::: {.column width="2%"}
 :::
 ::: {.column width="32%"}
-<!-- swap in: ![](images/egcf-plot.png){fig-alt="Representative EGCF chamber concentration time series"} -->
-::: {.placeholder .short role="img" aria-label="Placeholder: Representative EGCF chamber concentration time series"}
-PLOT: EGCF chamber time series<br>`images/egcf-plot.png`
-::::::
+![](images/egcf_flux.png){.result-plot fig-alt="EGCF oxygen flux from two chambers over successive incubations, from about -1 to +4.5 mmol per square meter per hour"}
+
 ::: {.funder}
 <!-- MassDEP logo: Wikimedia Commons, File:MassDEP_logo.svg (listed as public domain)
      https://commons.wikimedia.org/wiki/File:MassDEP_logo.svg -->
@@ -266,9 +247,7 @@ PLOT: EGCF chamber time series<br>`images/egcf-plot.png`
 None of this is new. WHOI has built seafloor instruments, benthic landers, and long-term moorings for decades, and other groups here learned these lessons the hard way long before I did. So the real takeaway: before your first deployment, go ask them. Someone down the hall has probably already solved your problem. And in the age of AI, it's tempting to just ask a chatbot. Those tools are useful, but they haven't lost an instrument to biofouling or a flooded connector. Ask people, not just machines. Thanks!
 :::
 
-## Backup: thinking in real time on a microcontroller {background-image="assets/whoi-bg.jpg"}
-
-[Backup slide]{.backup-tag}
+## Thinking in real time on a microcontroller {background-image="assets/whoi-bg.jpg"}
 
 :::: {.columns}
 
