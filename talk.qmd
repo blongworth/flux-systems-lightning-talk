@@ -103,6 +103,7 @@ All three had the same kinds of engineering problems, and that's the rest of thi
 - The ocean will quickly find every leaky connector, marginal power budget, and firmware edge case
 - Every problem found at sea costs a boat day, a dive, or a whole deployment
 - **Climb the ladder:** find problems where fixing them is cheap
+- **Version the firmware** at every rung: tag each build and write its version into the data, so every test result traces back to the code that produced it
 
 ::: {.ladder}
 ::: {.rung .r1}
@@ -128,6 +129,8 @@ Ocean<span>a cruise or a season</span>
 
 Every rung of this ladder costs about ten times more than the one below it. Run on the bench until it runs for days unattended. Put it in a tank to find leaks and biofouling-free baseline behavior. Run it outside on the dock to see real temperature swings, sun, and power. Only then go to the ocean.
 
+You'll change firmware constantly while climbing that ladder: a fix after the bench test, a new sample rate after the tank. Tag every build in git and have the firmware write its version or commit hash into every data file header. Then a test result is never "the system did X", it's "build 1.4.2 did X", and you know whether a fix worked.
+
 *[Add a specific example: e.g. a connector or housing failure that a tank test would have caught.]*
 :::
 
@@ -135,7 +138,7 @@ Every rung of this ladder costs about ten times more than the one below it. Run 
 
 :::: {.columns}
 
-::: {.column width="45%"}
+::: {.column width="45%" .tight}
 - A working **reduce → analyze → plot** pipeline is a diagnostic tool, not just a final step
 - Run it on every test deployment
 - Check the *structure* of the data, not just the values:
@@ -143,6 +146,7 @@ Every rung of this ladder costs about ten times more than the one below it. Run 
   - out-of-range or stuck values
   - clock drift, timing jitter
   - actual vs. nominal sample rate
+- **Make processing reproducible**: version the analysis code too, and record which version produced each result. Paired with the firmware version, you know *what was running when*
 :::
 
 ::: {.column width="55%"}
@@ -159,6 +163,8 @@ PLOT: representative time series with problems flagged<br>(gaps, dropped samples
 When the pipeline exists during testing, every test deployment produces a flux estimate and plots. Problems with the system show up right away: a noisy sensor, a pump that isn't flushing, a clock that drifts.
 
 Look at the data's structure as well as its values. Plot the time between samples. Are you actually getting 8 Hz, or 7.6 with gaps? Count the missing records. Check ranges and stuck values. For eddy covariance, a small timing offset between sensors biases the flux, so timing *is* data.
+
+The other half of the versioning story is the processing code. Firmware versions tell you how the data was *collected*. Versioned, reproducible processing tells you how it was *turned into fluxes*. Keep the pipeline in git, record the code version alongside every output, and make it rerunnable from raw data. Then when you fix a bug months later, you can reprocess everything and know exactly which results changed. Firmware version plus processing version answers "what was running when?" Without both, you're guessing why the data changed partway through a deployment.
 
 *[Describe what the plot shows: e.g. the Δt histogram from LECS that revealed dropped samples.]*
 :::
@@ -195,7 +201,7 @@ It doesn't have to be fancy. A few bytes an hour (battery, how many samples were
 ## Takeaways {background-image="assets/whoi-bg.jpg"}
 
 1. **Test on land first**: let the bench and tank find the cheap bugs
-2. **Analyze early**: the data pipeline is your best diagnostic, so check the data's structure
+2. **Analyze early, version everything**: check data structure; know what was running when
 3. **Phone home**: telemetry turns lost deployments into fixable ones
 4. **Reuse tools**: build modules that outlive one project
 5. **Ask around**: WHOI has solved these problems before. Ask people, not just machines
@@ -246,7 +252,7 @@ PLOT: EGCF chamber time series<br>`images/egcf-plot.png`
 [Thanks! · blongworth@whoi.edu]{.subtle}
 
 ::: notes
-**[3:10–4:00]** To sum up: test on land first, build the analysis early and look at the data's structure, use telemetry for anything long, and design things to be reused. Here's a representative result from each system. They all work now, thanks to those lessons.
+**[3:10–4:00]** To sum up: test on land first, build the analysis early, look at the data's structure, and version your code, use telemetry for anything long, and design things to be reused. Here's a representative result from each system. They all work now, thanks to those lessons.
 
 None of this is new. WHOI has built seafloor instruments, benthic landers, and long-term moorings for decades, and other groups here learned these lessons the hard way long before I did. So the real takeaway: before your first deployment, go ask them. Someone down the hall has probably already solved your problem. And in the age of AI, it's tempting to just ask a chatbot. Those tools are useful, but they haven't lost an instrument to biofouling or a flooded connector. Ask people, not just machines. Thanks!
 :::
