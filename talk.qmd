@@ -101,7 +101,7 @@ All three had the same kinds of engineering problems, and that's the rest of thi
 - The ocean will quickly find every leaky connector, marginal power budget, and firmware issue
 - Every problem found during deployments costs a boat day, a swim, or the whole experiment
 - Find problems where fixing them is cheap. Iteration is quick when it's on a bench!
-- Version the firmware. Knowing what was deployed when helps isolate issues and reduce confusion.
+- **Version the firmware and document every test**: which build, what setup, what happened. A test log turns "it failed" into a lesson.
 
 ![](images/build-test-fix.svg){.cycle-fig fig-alt="Diagram of a build, test, fix loop labeled: short loop equals fast learning. Next to it, four test venues in order: bench (minutes), tank (hours), dock (a day), and field site (a deployment). An arrow runs from shorter loop and cheaper fixes toward more realistic. Caption: the trick is to make tests realistic but keep them close, bringing realism to the bench with real seawater, power, sensors, and long unattended runs."}
 
@@ -111,6 +111,8 @@ All three had the same kinds of engineering problems, and that's the rest of thi
 Development is a build, test, fix loop, and how fast you improve depends on how short that loop is. On the bench, a loop takes minutes. In a tank, hours. On the dock, a day. At the field site, a whole deployment. The trick is to make tests as realistic as possible while keeping them close, so the loop stays short. Bring the realism to the bench: real seawater, real power supplies, real sensors, and long unattended runs. Save the field site for the problems you can only find there.
 
 You'll change firmware constantly while going around that loop: a fix after the bench test, a new sample rate after the tank. Tag every build in git and have the firmware write its version or commit hash into every data file header. Then a test result is never "the system did X", it's "build 1.4.2 did X", and you know whether a fix worked.
+
+Document every test, even the boring ones. A short log entry (date, firmware build, setup, what you were testing, what happened, and what you changed) takes two minutes. Without it, three tests later nobody remembers whether the pump fix was in the tank run or the dock run. Notes plus versioned firmware let you connect a symptom to a cause, and they're what you hand to the next person who builds one of these.
 
 *[Add a specific example: e.g. a connector or housing failure that a tank test would have caught.]*
 :::
@@ -147,7 +149,7 @@ The other half of the versioning story is the processing code. Firmware versions
 *[Describe what the plot shows: e.g. the Δt histogram from LECS that revealed dropped samples.]*
 :::
 
-## Lesson 3: [Telemetry]{.accent} saves time and stress on long deployments {background-image="assets/whoi-bg.jpg"}
+## Lesson 3: [Remote monitoring]{.accent} saves time and stress {background-image="assets/whoi-bg.jpg"}
 
 :::: {.columns}
 
@@ -167,18 +169,18 @@ The other half of the versioning story is the processing code. Firmware versions
 ::::
 
 ::: notes
-**[2:30–3:10]** For short deployments you can get away without it, but for anything that runs weeks to months, remote telemetry changes everything. Without it, a failure on day 2 means 58 days of nothing, and you don't learn that until recovery.
+**[2:30–3:10]** For short deployments you can get away without it, but for anything that runs weeks to months, remote monitoring (the system sending status back to shore while it's deployed) changes everything. Without it, a failure on day 2 means 58 days of nothing, and you don't learn that until recovery.
 
 It doesn't have to be fancy. A few bytes an hour (battery, how many samples were recorded, the last good timestamp, a couple of sensor values) is enough to know whether the system is healthy. With that, you can schedule a dive, change a setting, or pull the system before you lose the season.
 
-*[Add example: what LECS telemetry caught, or what we missed without it.]*
+*[Add example: what LECS remote monitoring caught, or what we missed without it.]*
 :::
 
 ## Takeaways {background-image="assets/whoi-bg.jpg"}
 
-1. **Test on land first**: quick test iterations save time later
-2. **Analyze early, version everything**: check data structure; know what was running when
-3. **Phone home**: telemetry turns lost deployments into fixable ones
+1. **Test on land first**: quick iterations save time later
+2. **Analyze early**: check data structure; know you're getting good data
+3. **Check in remotely**: catch problems early
 4. **Reuse tools**: build modules that outlive one project
 5. **Ask around**: WHOI has solved these problems before. Ask people, not just machines
 
@@ -225,7 +227,7 @@ It doesn't have to be fancy. A few bytes an hour (battery, how many samples were
 [Thanks! · blongworth@whoi.edu]{.subtle}
 
 ::: notes
-**[3:10–4:00]** To sum up: test on land first, build the analysis early, look at the data's structure, and version your code, use telemetry for anything long, and design things to be reused. Here's a representative result from each system. They all work now, thanks to those lessons.
+**[3:10–4:00]** To sum up: test on land first, build the analysis early, look at the data's structure, and version your code, monitor long deployments remotely, and design things to be reused. Here's a representative result from each system. They all work now, thanks to those lessons.
 
 None of this is new. WHOI has built seafloor instruments, benthic landers, and long-term moorings for decades, and other groups here learned these lessons the hard way long before I did. So the real takeaway: before your first deployment, go ask them. Someone down the hall has probably already solved your problem. And in the age of AI, it's tempting to just ask a chatbot. Those tools are useful, but they haven't lost an instrument to biofouling or a flooded connector. Ask people, not just machines. Thanks!
 :::
@@ -268,7 +270,7 @@ void loop() {
 ::::
 
 ::: notes
-**[Backup, only if asked]** Writing firmware for these systems needs a different way of reasoning than writing analysis code. In R or Python, you have all the data and you process it in order. On a microcontroller there's no operating system or scheduler. One loop has to read sensors at a fixed rate, run pumps and valves, write to the SD card, and talk to telemetry.
+**[Backup, only if asked]** Writing firmware for these systems needs a different way of reasoning than writing analysis code. In R or Python, you have all the data and you process it in order. On a microcontroller there's no operating system or scheduler. One loop has to read sensors at a fixed rate, run pumps and valves, write to the SD card, and send status updates to shore.
 
 If anything blocks, such as a delay, waiting for a serial reply, or an SD card that takes 100 ms to write, you miss samples. So every task gets broken into small steps and driven by timers and state machines, writes are buffered, and you budget how long each task can take within one sample period.
 :::
