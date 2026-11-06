@@ -26,6 +26,17 @@ quarto render          # output in _site/index.html
 quarto preview talk.qmd
 ```
 
+## Exporting to PowerPoint
+
+To reuse the slides in a larger PowerPoint deck:
+
+```sh
+quarto render              # or leave `quarto preview` running
+uv run export_pptx.py      # writes export/flux-talk.pptx
+```
+
+Each slide becomes a full-slide 1920×1080 picture (16:9) with its speaker notes in PowerPoint's notes field. In the target presentation, use **Insert → Slides from → Other Presentation** (Reuse Slides on Windows). Requires Google Chrome; set `CHROME=/path/to/chrome` if it's not in `/Applications`. The PNGs are also saved in `export/slides/`. `export/` is git-ignored.
+
 ## Layout
 
 | Path | Contents |
@@ -34,6 +45,7 @@ quarto preview talk.qmd
 | `whoi.scss` | revealjs theme based on the WHOI brand palette and widescreen template |
 | `assets/` | WHOI template background images and logo |
 | `images/` | System photos, plots, and funder logos (see `images/LOGO_SOURCES.md`) |
+| `export_pptx.py`, `pyproject.toml` | PowerPoint export (run with `uv run`) |
 | `.github/workflows/publish.yml` | Renders on every push to `main` and deploys to Pages |
 
 Photo and plot placeholders in `talk.qmd` each have a commented `swap in:` line with the image path and alt text, ready to uncomment.
