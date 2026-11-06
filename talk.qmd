@@ -37,11 +37,11 @@ title-slide-attributes:
 ### LECS
 *Long-term Eddy Covariance System*
 
-Correlates fast vertical velocity with fast concentration fluctuations
+Correlates vertical velocity with concentration fluctuations
 
 $$F = \overline{w'C'}$$
 
-[O₂ · heat · H⁺ (pH)]{.gases}
+[O₂ · H⁺ (pH) · heat]{.gases}
 :::
 
 ::: {.column width="2%"}
@@ -53,7 +53,7 @@ $$F = \overline{w'C'}$$
 ### GEMS
 *Gradient Exchange Mass Spectrometry*
 
-Quadrupole mass spec measures concentration at several heights; gradient × mixing gives flux
+Membrane inlet mass spec measures concentration at two heights; gradient × mixing gives flux
 
 $$F = -K_z\,\frac{\partial C}{\partial z}$$
 
@@ -69,7 +69,7 @@ $$F = -K_z\,\frac{\partial C}{\partial z}$$
 ### EGCF
 *Eel Grass Chamber Flux*
 
-Change in concentration inside a closed chamber over time
+Change in concentration inside a closed chambers over time
 
 $$F = \frac{V}{A}\,\frac{dC}{dt}$$
 
@@ -98,10 +98,10 @@ All three had the same kinds of engineering problems, and that's the rest of thi
 
 ## Lesson 1: The ocean is a [great tester]{.accent}, and a bad place to start testing {background-image="assets/whoi-bg.jpg"}
 
-- The ocean will quickly find every leaky connector, marginal power budget, and firmware edge case
-- Every problem found at sea costs a boat day, a swim, or a whole deployment
+- The ocean will quickly find every leaky connector, marginal power budget, and firmware issue
+- Every problem found during deployments costs a boat day, a swim, or the whole experiment
 - Find problems where fixing them is cheap. Iteration is quick when it's on a bench!
-- **Version the firmware:** tag each build and write its version into the data, so every test result traces back to the code that produced it
+- Version the firmware. Knowing what was deployed when helps isolate issues and reduce confusion.
 
 ::: {.ladder}
 ::: {.rung .r1}
@@ -137,7 +137,7 @@ You'll change firmware constantly while climbing that ladder: a fix after the be
 :::: {.columns}
 
 ::: {.column width="45%"}
-- **Reduce → analyze → plot** is a diagnostic tool: run it on every test
+- **Reduce → analyze → plot** is a diagnostic tool for system function from the test period onward
 - Check the data's *structure*, not just values:
   - gaps
   - out-of-range or stuck values
@@ -170,7 +170,7 @@ The other half of the versioning story is the processing code. Firmware versions
 
 ::: {.column width="45%"}
 - Find issues on **day 2**, not at recovery on **day 60**
-- Even a small heartbeat helps:
+- Even partial data helps:
   - battery voltage
   - sample counts / last good timestamp
   - a few key sensor values
@@ -193,7 +193,7 @@ It doesn't have to be fancy. A few bytes an hour (battery, how many samples were
 
 ## Takeaways {background-image="assets/whoi-bg.jpg"}
 
-1. **Test on land first**: let the bench and tank find the cheap bugs
+1. **Test on land first**: quick test iterations save time later
 2. **Analyze early, version everything**: check data structure; know what was running when
 3. **Phone home**: telemetry turns lost deployments into fixable ones
 4. **Reuse tools**: build modules that outlive one project
