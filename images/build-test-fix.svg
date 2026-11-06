@@ -30,13 +30,9 @@
     <circle cx="156" cy="225" r="50" fill="#0069B1"/>
     <text x="156" y="234">Fix</text>
   </g>
-  <g text-anchor="middle" fill="#FFD100" font-weight="700" font-size="22">
-    <text x="260" y="152">short loop</text>
-    <text x="260" y="180">= fast learning</text>
-  </g>
 
   <!-- Realism vs. loop length -->
-  <text x="1010" y="34" text-anchor="middle" font-size="26" font-weight="700" fill="#FFD100">The trick: make tests realistic, but keep them close</text>
+  <text x="1010" y="34" text-anchor="middle" font-size="26" font-weight="700" fill="#FFD100">Balance iteration speed with realism</text>
 
   <g text-anchor="middle" fill="#FFFFFF">
     <rect x="600" y="70" width="190" height="120" rx="10" fill="#00B7BD"/>
@@ -63,5 +59,4 @@
     <text x="600" y="265">shorter loop, cheaper fixes</text>
     <text x="1420" y="265" text-anchor="end">more realistic</text>
   </g>
-  <text x="1010" y="312" text-anchor="middle" font-size="22" fill="#BBBCBC" font-style="italic">Bring realism to the bench: real seawater, real power, real sensors, long unattended runs</text>
 </svg>

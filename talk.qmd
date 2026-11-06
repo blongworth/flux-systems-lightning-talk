@@ -96,12 +96,13 @@ EGCF reuses the GEMS mass spec and software, and adds SCALUP, a sonde we built i
 All three had the same kinds of engineering problems, and that's the rest of this talk.
 :::
 
-## Lesson 1: The ocean is a [great tester]{.accent}, and a bad place to start testing {background-image="assets/whoi-bg.jpg"}
+## Lesson 1: The ocean is a [great tester]{.accent}, and a bad place to test {background-image="assets/whoi-bg.jpg"}
 
-- The ocean will quickly find every leaky connector, marginal power budget, and firmware issue
-- Every problem found during deployments costs a boat day, a swim, or the whole experiment
-- Find problems where fixing them is cheap. Iteration is quick when it's on a bench!
-- **Version the firmware and document every test**: which build, what setup, what happened. A test log turns "it failed" into a lesson.
+- The ocean finds every leak, power issue, and firmware bug
+- Problems at sea cost a boat day, a swim, or the experiment
+- Find problems when the fix is cheap. Iteration is quick on a bench!
+- **Version firmware**: know what was deployed when
+- **Document tests**: build, setup, result
 
 ![](images/build-test-fix.svg){.cycle-fig fig-alt="Diagram of a build, test, fix loop labeled: short loop equals fast learning. Next to it, four test venues in order: bench (minutes), tank (hours), dock (a day), and field site (a deployment). An arrow runs from shorter loop and cheaper fixes toward more realistic. Caption: the trick is to make tests realistic but keep them close, bringing realism to the bench with real seawater, power, sensors, and long unattended runs."}
 
