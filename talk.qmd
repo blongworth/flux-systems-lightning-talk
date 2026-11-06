@@ -103,31 +103,14 @@ All three had the same kinds of engineering problems, and that's the rest of thi
 - Find problems where fixing them is cheap. Iteration is quick when it's on a bench!
 - Version the firmware. Knowing what was deployed when helps isolate issues and reduce confusion.
 
-::: {.ladder}
-::: {.rung .r1}
-Bench<span>minutes to fix</span>
-:::
-::: {.rung .r2}
-Tank<span>hours</span>
-:::
-::: {.rung .r3}
-Outside / dock<span>a day</span>
-:::
-::: {.rung .r4}
-Field Site<span>a deployment</span>
-:::
-:::
-
-::: {.ladder-caption}
-<span>cheap, fast, repeatable</span><span>expensive, slow, unforgiving</span>
-:::
+![](images/build-test-fix.svg){.cycle-fig fig-alt="Diagram of a build, test, fix loop labeled: short loop equals fast learning. Next to it, four test venues in order: bench (minutes), tank (hours), dock (a day), and field site (a deployment). An arrow runs from shorter loop and cheaper fixes toward more realistic. Caption: the trick is to make tests realistic but keep them close, bringing realism to the bench with real seawater, power, sensors, and long unattended runs."}
 
 ::: notes
 **[1:00–1:40]** The ocean is a fantastic test environment. It's corrosive, cold, wet, moving, and full of life, and it finds every weakness in your system within days. That's exactly why it shouldn't be your first test.
 
-Every rung of this ladder costs about ten times more than the one below it. Run on the bench until it runs for days unattended. Put it in a tank to find leaks and biofouling-free baseline behavior. Run it outside on the dock to see real temperature swings, sun, and power. Only then go to the ocean.
+Development is a build, test, fix loop, and how fast you improve depends on how short that loop is. On the bench, a loop takes minutes. In a tank, hours. On the dock, a day. At the field site, a whole deployment. The trick is to make tests as realistic as possible while keeping them close, so the loop stays short. Bring the realism to the bench: real seawater, real power supplies, real sensors, and long unattended runs. Save the field site for the problems you can only find there.
 
-You'll change firmware constantly while climbing that ladder: a fix after the bench test, a new sample rate after the tank. Tag every build in git and have the firmware write its version or commit hash into every data file header. Then a test result is never "the system did X", it's "build 1.4.2 did X", and you know whether a fix worked.
+You'll change firmware constantly while going around that loop: a fix after the bench test, a new sample rate after the tank. Tag every build in git and have the firmware write its version or commit hash into every data file header. Then a test result is never "the system did X", it's "build 1.4.2 did X", and you know whether a fix worked.
 
 *[Add a specific example: e.g. a connector or housing failure that a tank test would have caught.]*
 :::

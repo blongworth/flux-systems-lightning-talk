@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -12 1440 342" font-family="Arial, Helvetica, sans-serif">
+  <title>Build, test, fix cycle</title>
+  <desc>A build, test, fix loop. A short loop allows rapid iteration. Test venues from bench to tank to dock to field site trade a longer loop for more realism; the trick is making tests realistic while keeping them close.</desc>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#00A9E0"/>
+    </marker>
+    <marker id="headw" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#E6E7E8"/>
+    </marker>
+    <linearGradient id="span" gradientUnits="userSpaceOnUse" x1="615" x2="1405" y1="0" y2="0">
+      <stop offset="0" stop-color="#00B7BD"/>
+      <stop offset="0.35" stop-color="#00A9E0"/>
+      <stop offset="0.7" stop-color="#0069B1"/>
+      <stop offset="1" stop-color="#EE5340"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Build / test / fix loop (center 260,165; radius 120) -->
+  <g fill="none" stroke="#00A9E0" stroke-width="6" marker-end="url(#head)">
+    <path d="M316.3,59 A120,120 0 0 1 379.9,169.2"/>
+    <path d="M323.6,266.8 A120,120 0 0 1 196.4,266.8"/>
+    <path d="M140.1,169.2 A120,120 0 0 1 203.7,59"/>
+  </g>
+  <g font-weight="700" font-size="26" fill="#FFFFFF" text-anchor="middle">
+    <circle cx="260" cy="45" r="50" fill="#0069B1"/>
+    <text x="260" y="54">Build</text>
+    <circle cx="364" cy="225" r="50" fill="#0069B1"/>
+    <text x="364" y="234">Test</text>
+    <circle cx="156" cy="225" r="50" fill="#0069B1"/>
+    <text x="156" y="234">Fix</text>
+  </g>
+  <g text-anchor="middle" fill="#FFD100" font-weight="700" font-size="22">
+    <text x="260" y="152">short loop</text>
+    <text x="260" y="180">= fast learning</text>
+  </g>
+
+  <!-- Realism vs. loop length -->
+  <text x="1010" y="34" text-anchor="middle" font-size="26" font-weight="700" fill="#FFD100">The trick: make tests realistic, but keep them close</text>
+
+  <g text-anchor="middle" fill="#FFFFFF">
+    <rect x="600" y="70" width="190" height="120" rx="10" fill="#00B7BD"/>
+    <text x="695" y="120" font-size="26" font-weight="700">Bench</text>
+    <text x="695" y="155" font-size="20" fill="#E6E7E8">minutes</text>
+
+    <rect x="810" y="70" width="190" height="120" rx="10" fill="#00A9E0"/>
+    <text x="905" y="120" font-size="26" font-weight="700">Tank</text>
+    <text x="905" y="155" font-size="20" fill="#E6E7E8">hours</text>
+
+    <rect x="1020" y="70" width="190" height="120" rx="10" fill="#0069B1"/>
+    <text x="1115" y="120" font-size="26" font-weight="700">Dock</text>
+    <text x="1115" y="155" font-size="20" fill="#E6E7E8">a day</text>
+
+    <rect x="1230" y="70" width="190" height="120" rx="10" fill="#EE5340"/>
+    <text x="1325" y="120" font-size="26" font-weight="700">Field site</text>
+    <text x="1325" y="155" font-size="20" fill="#E6E7E8">a deployment</text>
+  </g>
+
+  <line x1="615" y1="225" x2="1405" y2="225" stroke="url(#span)" stroke-width="6"/>
+  <path d="M600,225 l18,-11 v22 z" fill="#00B7BD"/>
+  <path d="M1420,225 l-18,-11 v22 z" fill="#EE5340"/>
+  <g font-size="22" fill="#E6E7E8">
+    <text x="600" y="265">shorter loop, cheaper fixes</text>
+    <text x="1420" y="265" text-anchor="end">more realistic</text>
+  </g>
+  <text x="1010" y="312" text-anchor="middle" font-size="22" fill="#BBBCBC" font-style="italic">Bring realism to the bench: real seawater, real power, real sensors, long unattended runs</text>
+</svg>
